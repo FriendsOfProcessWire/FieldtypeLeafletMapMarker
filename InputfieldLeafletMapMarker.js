@@ -49,7 +49,7 @@ var InputfieldLeafletMapMarker = {
 		var $notes = $map.siblings(".notes");
 		var $latlng = '';
 
-		$( "#Inputfield_leafletmap" ).on( "click", function() {
+		$( ".InputfieldLeafletMapMarkerAddress" ).on( "click", function() {
 		  	$(".leaflet-control-geocoder.leaflet-control").toggleClass("leaflet-control-geocoder-expanded");
 		  	$(".leaflet-control-geocoder.leaflet-control .undefined").focus();
 		});
