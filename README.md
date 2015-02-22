@@ -1,4 +1,4 @@
-# FieldtypeLeafletMapMarker Module for ProcessWire 
+# FieldtypeLeafletLeafletMapMarker Module for ProcessWire 
 
 This is a port of the Map Marker Fieldtype by Ryan Cramer. Instead of Google maps it 
 uses Leaflet maps. Google maps geocoding is still used for geocoding default lat/lng values.
@@ -13,23 +13,23 @@ far beyond that and is relatively full featured. As a result, it may no longer b
 the simplest example of how to implement a Fieldtype/Inputfield, though it is very
 effective and useful. 
 
-MapMarker also has a corresponding Inputfield and Markup module, named
-InputfieldMapMarker and MarkupLeafletMap. When you install FieldtypeMapMarker, the
+LeafletMapMarker also has a corresponding Inputfield and Markup module, named
+InputfieldLeafletMapMarker and MarkupLeafletMap. When you install FieldtypeLeafletMapMarker, the
 Inputfield will also be installed and used for input on the admin side. Installation
 of MarkupLeafletMap is optional. It provides a simple way to render Leaflet maps with
-the data managed by FieldtypeMapMarker. 
+the data managed by FieldtypeLeafletMapMarker. 
 
 
 ## Using Leaflet Map Marker
 
 ### How to install
 
-1. Copy all of the files for this module into /site/modules/FieldtypeLeafletMapMarker/
+1. Copy all of the files for this module into /site/modules/FieldtypeLeafletLeafletMapMarker/
 
 2. In your admin, go to the Modules screen and "check for new modules." Click *install*
    for the Map Marker Fieldtype. 
 
-3. In your admin, go to Setup > Fields > Add New Field. Choose MapMarker as the type.
+3. In your admin, go to Setup > Fields > Add New Field. Choose LeafletMapMarker as the type.
    If you are not sure what to name your field, simply "map" is a good one! Once created,
    configure the settings on the *input* tab. 
 
@@ -69,7 +69,7 @@ echo $page->map->zoom;		// outputs the zoom level
 ## Markup Leaflet Map
 
 This package also comes with a module called MarkupLeafletMap. It provides a simple means
-of outputting a Leaflet Map based on the data managed by FieldtypeMapMarker. To install,
+of outputting a Leaflet Map based on the data managed by FieldtypeLeafletMapMarker. To install,
 simply click "install" for the Leaflet Maps (Markup) module. This is a Markup module, 
 meaning it exists primarily to generate markup for output on the front-end of your site.
 
@@ -77,7 +77,8 @@ meaning it exists primarily to generate markup for output on the front-end of yo
 
 Add this somewhere before your closing `</head>` tag:
 `````````
-<script type='text/javascript' src='https://maps.Leafletapis.com/maps/api/js?sensor=false'></script>
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 `````````
 
 In the location where you want to output your map, place the following in your template file:
@@ -113,9 +114,6 @@ Height of the map (type: string; default: 300px)
 
 `zoom`    
 Zoom level 1-25 (type: integer; default: from your field settings)
-
-`type`   
-Map type: ROADMAP, HYBRID or SATELLITE (type: string; default: from your field settings)
 
 `id`   
 Map ID attribute (type: string; default: mgmap)
