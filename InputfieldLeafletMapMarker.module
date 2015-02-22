@@ -1,0 +1,300 @@
+<?php
+
+/**
+ * ProcessWire Leaflet Map Marker Inputfield
+ *
+ * Provides the admin control panel inputs for FieldtypeLeafletMapMarker
+ * 
+ * For documentation about the fields used in this class, please see:  
+ * /wire/core/Fieldtype.php
+ * 
+ * ProcessWire 2.x 
+ * Copyright (C) 2013 by Ryan Cramer 
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ * 
+ * http://processwire.com
+ *
+ */
+
+class InputfieldLeafletMapMarker extends Inputfield {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Leaflet Map Marker',
+			'version' => 207,
+			'summary' => "Provides input for the LeafletLeafletMapMarker Fieldtype",
+			'requires' => 'FieldtypeMapMarker',
+			'icon' => 'map-marker', 
+			);
+	}
+	
+	const defaultAddr = 'Decatur, Georgia';
+
+	/**
+	 * Just in case this Inputfield is being used separately from FieldtypeLeafletMapMarker, we include the LeafletMapMarker class
+	 *
+	 */
+	public function __construct() {
+		require_once(dirname(__FILE__) . '/LeafletMapMarker.php'); 
+		$this->set('defaultAddr', self::defaultAddr); 
+		$this->set('defaultZoom', 12); 
+		$this->set('defaultLat', ''); 
+		$this->set('defaultLng', ''); 
+		$this->set('height', 500); 
+		parent::__construct();
+	}
+
+	/**
+	 * Initialize the LeafletLeafletMapMarker Inputfield
+	 *
+	 * We require Leaflet Maps API for map display, so we add it the scripts that will be loaded in PW admin
+	 *
+	 */
+	public function init() {
+
+		$class = $this->className(); 
+
+		
+		$this->config->styles->add(($this->config->https ? 'https' : 'http') . '://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css'); 
+		$this->config->styles->add($this->config->urls->$class . 'Control.Geocoder.css'); 
+		//$this->config->styles->add($this->config->urls->$class . 'InputfieldLeafletMapMarker.css'); 
+		$this->config->scripts->add(($this->config->https ? 'https' : 'http') . '://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js'); 
+		$this->config->scripts->add($this->config->urls->$class . 'Control.Geocoder.js'); 
+
+
+		return parent::init();
+	}
+
+
+	/**
+	 * Set an attribute to this Inputfield
+	 *
+	 * In this case, we just capture the 'value' attribute and make sure it's something valid
+ 	 *
+	 */
+	public function setAttribute($key, $value) {
+
+		if($key == 'value' && !$value instanceof LeafletMapMarker && !is_null($value)) {
+			throw new WireException("This input only accepts a LeafletLeafletMapMarker for it's value"); 
+		}
+
+		return parent::setAttribute($key, $value); 
+	}
+
+	public function isEmpty() {
+		return (!$this->value || ((float) $this->value->lat) === 0.0); 
+	}
+
+	/**
+	 * Render the markup needed to draw the Inputfield
+	 *
+	 */
+	public function ___render() {
+
+		$name = $this->attr('name'); 
+		$id = $this->attr('id'); 
+		$marker = $this->attr('value'); 
+		if($marker->lat == 0.0) $marker->lat = $this->defaultLat; 
+		if($marker->lng == 0.0) $marker->lng = $this->defaultLng; 
+		if(!$marker->zoom) $marker->zoom = $this->defaultZoom;
+		$address = htmlentities($marker->address, ENT_QUOTES, "UTF-8"); 
+		$toggleChecked = $marker->status != LeafletMapMarker::statusNoGeocode ? " checked='checked'" : '';
+		$status = $marker->status == LeafletMapMarker::statusNoGeocode ? 0 : $marker->status; 
+		$mapType = $this->defaultType; 
+		$height = $this->height ? (int) $this->height : 300; 
+
+		$labels = array(
+			'addr' => $this->_('Address'), 
+			'lat' => $this->_('Latitude'),
+			'lng' => $this->_('Longitude'),
+			'zoom' => $this->_('Zoom')
+			);
+
+		$out = <<< _OUT
+
+		<span></span>
+
+		<p class='InputfieldLeafletMapMarkerAddress'>
+			<label>
+				<strong>$labels[addr]</strong>
+				<br />
+				<input readonly type='text' id='{$id}' name='{$name}' value='{$address}'  /><br />
+			</label>
+			<input type='hidden' id='_{$name}_js_geocode_address' name='_{$name}_js_geocode_address' value='' />
+		</p>
+
+
+		<p class='InputfieldLeafletMapMarkerLat'>
+			<label>
+				<strong>$labels[lat]</strong><br />
+				<input type='text' id='_{$id}_lat' name='_{$name}_lat' value='{$marker->lat}' />
+			</label>
+		</p>
+
+		<p class='InputfieldLeafletMapMarkerLng'>
+			<label>
+				<strong>$labels[lng]</strong><br />
+				<input type='text' id='_{$id}_lng' name='_{$name}_lng' value='{$marker->lng}' />
+			</label>
+		</p>
+
+		<p class='InputfieldLeafletMapMarkerZoom'>
+			<label>
+				<strong>$labels[zoom]</strong><br />
+				<input type='number' min='0' id='_{$id}_zoom' name='_{$name}_zoom' value='{$marker->zoom}' />
+			</label>
+		</p>
+
+
+_OUT;
+
+		$out .= "<div class='InputfieldLeafletMapMarkerMap' " . 
+			"id='_{$id}_map' " . 
+			"style='height: {$height}px' " . 
+			"data-lat='$marker->lat' " . 
+			"data-lng='$marker->lng' " . 
+			"data-zoom='$marker->zoom' " . 
+			"data-type='$mapType'>" . 
+			"</div>";
+
+		//$this->notes = $marker->statusString; 
+
+		return $out; 
+	}
+
+	/**
+	 * Process the input after a form submission
+	 *
+	 */
+	public function ___processInput(WireInputData $input) {
+
+		$name = $this->attr('name'); 
+		$marker = $this->attr('value');
+
+		if(!isset($input->$name)) return $this;
+
+		if($input->$name == $this->defaultAddr) {
+			$marker->set('address', ''); 
+		} else {
+			$marker->set('address', $input->$name);
+		}
+
+		$lat = $input["_{$name}_lat"];
+		$lng = $input["_{$name}_lng"]; 
+
+		$precision = 4; 
+		if(	((string) round($lat, $precision)) != ((string) round($this->defaultLat, $precision)) ||
+			((string) round($lng, $precision)) != ((string) round($this->defaultLng, $precision))) {
+
+			$marker->set('lat', $lat); 
+			$marker->set('lng', $lng); 
+		} else {
+			// $this->message("Kept lat/lng at unset value", Notice::debug); 
+		}
+
+		$zoom = $input["_{$name}_zoom"]; 
+		if($zoom > -1 && $zoom < 30) $marker->zoom = (int) $zoom; 
+	
+		$status = $input["_{$name}_status"]; 
+		if(is_null($status)) $marker->set('status', LeafletMapMarker::statusNoGeocode); // disable geocode
+			else $marker->set('status', (int) $status);
+
+		// if the address changed, then redo the geocoding.
+		// while we do this in the Fieldtype, we also do it here in case this Inputfield is used on it's own.
+		// the LeafletMapMarker class checks to make sure it doesn't do the same geocode twice. 
+		if($marker->isChanged('address') && $marker->address && $marker->status != LeafletMapMarker::statusNoGeocode) {
+			// double check that the address wasn't already populated by the JS geocoder
+			// this prevents user-dragged markers that don't geocode to an exact location from getting 
+			// unintentionally moved by the PHP-side geocoder
+			if($input["_{$name}_js_geocode_address"] == $marker->address) {
+				// prevent the geocoder from running in the fieldtype
+				$marker->skipGeocode = true; 
+				$this->message('Skipping geocode (already done by JS geocoder)', Notice::debug); 
+			} else {
+				$marker->geocode();
+			}
+		}
+
+		return $this;
+	}
+
+	public function ___getConfigInputfields() {
+		$inputfields = parent::___getConfigInputfields();
+
+		$field = $this->modules->get('InputfieldText'); 
+		$field->attr('name', 'defaultAddr'); 
+		$field->label = $this->_('Default Address'); 
+		$field->description = $this->_('This will be geocoded to become the starting point of the map.'); 
+		$field->attr('value', $this->defaultAddr); 
+		$field->notes = $this->_('When modifying the default address, please make the Latitude and Longitude fields below blank, which will force the system to geocode your new address.');  
+		$inputfields->add($field); 
+
+		if(!$this->defaultLat && !$this->defaultLng) {
+			$m = new LeafletMapMarker();
+			$m->address = $this->defaultAddr; 
+			$status = $m->geocode();	
+			if($status > 0) {
+				$this->defaultLat = $m->lat; 
+				$this->defaultLng = $m->lng; 
+				$this->message($this->_('Geocoded your default address. Please hit save once again to commit the new default latitude and longitude.')); 
+			}
+		}
+
+		$field = $this->modules->get('InputfieldText'); 
+		$field->attr('name', 'defaultLat'); 
+		$field->label = $this->_('Default Latitude'); 
+		$field->attr('value', $this->defaultLat); 
+		$field->columnWidth = 50; 
+		$inputfields->add($field); 
+
+		$field = $this->modules->get('InputfieldText'); 
+		$field->attr('name', 'defaultLng'); 
+		$field->label = $this->_('Default Longitude'); 
+		$field->attr('value', $this->defaultLng); 
+		$field->columnWidth = 50; 
+		$inputfields->add($field); 
+/*
+		$field = $this->modules->get('InputfieldRadios'); 
+		$field->attr('name', 'defaultType'); 
+		$field->label = $this->_('Default Map Type'); 
+		$field->addOption('HYBRID', $this->_('Hybrid')); 
+		$field->addOption('ROADMAP', $this->_('Road Map')); 
+		$field->addOption('SATELLITE', $this->_('Satellite')); 
+		$field->attr('value', $this->defaultType); 
+		$field->optionColumns = 1; 
+		$field->columnWidth = 50; 
+		$inputfields->add($field); 
+*/
+		$field = $this->modules->get('InputfieldInteger'); 	
+		$field->attr('name', 'height'); 
+		$field->label = $this->_('Map Height (in pixels)'); 
+		$field->attr('value', $this->height); 
+		$field->attr('type', 'number'); 
+		$field->columnWidth = 50; 
+		$inputfields->add($field); 
+
+		$field = $this->modules->get('InputfieldInteger'); 	
+		$field->attr('name', 'defaultZoom'); 
+		$field->label = $this->_('Default Zoom'); 
+		$field->description = $this->_('Enter a value between 1 and 18.');  // Zoom level description
+		$field->attr('value', $this->defaultZoom); 
+		$field->attr('type', 'number'); 
+		$inputfields->add($field); 
+
+		$field = $this->modules->get('InputfieldMarkup'); 
+		$field->label = $this->_('API Notes'); 
+		$field->description = $this->_('You can access individual values from this field using the following from your template files:');
+		$field->value = 
+			"<pre>" .
+			"\$page->{$this->name}->address\n" . 
+			"\$page->{$this->name}->lat\n" . 
+			"\$page->{$this->name}->lng\n" . 
+			"\$page->{$this->name}->zoom" . 
+			"</pre>";
+
+		$inputfields->add($field); 
+
+		return $inputfields; 	
+	}
+
+}

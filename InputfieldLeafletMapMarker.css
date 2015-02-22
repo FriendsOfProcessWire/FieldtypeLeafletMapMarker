@@ -1,0 +1,76 @@
+.InputfieldLeafletMapMarker input[type=number], 
+.InputfieldLeafletMapMarker input[type=text] {
+	width: 99.5%; 
+}
+
+input[readonly="readonly"], input[readonly] {
+ color: grey;
+}
+
+.InputfieldLeafletMapMarkerToggle span {
+	display: none; 
+}
+
+.InputfieldLeafletMapMarkerAddress {
+	float: left; 
+	width: 70%; 
+	padding-right: 2%; 
+}
+
+.InputfieldLeafletMapMarkerToggle {
+	float: left; 
+	width: 28%; 
+}
+
+.InputfieldLeafletMapMarkerLat,
+.InputfieldLeafletMapMarkerLng {
+	width: 42%; 
+	float: left; 
+	padding-right: 2%; 
+}
+
+.InputfieldLeafletMapMarkerZoom {
+	float: left; 
+	width: 10%; 
+}
+
+.InputfieldLeafletMapMarker .notes {
+	clear: both; 
+}
+
+.InputfieldLeafletMapMarkerMap {
+	width: 100%; 
+	height: 300px; 
+}
+
+@media only screen and (min-width: 768px) {
+
+	.InputfieldLeafletMapMarkerAddress {
+		width: 38%; 
+		padding-right: 1%; 
+	}
+
+	.InputfieldLeafletMapMarkerToggle {
+		width: 2%; 
+		padding-right: 0.5%; 
+		position: relative;
+	}
+
+	.InputfieldLeafletMapMarkerToggle strong {
+		/* hide geocode label */
+		display: none; 
+	}
+
+	.InputfieldLeafletMapMarkerLat,
+	.InputfieldLeafletMapMarkerLng {
+		width: 23%; 
+		padding-right: 1%; 
+	}
+
+	.InputfieldLeafletMapMarkerZoom {
+		float: left; 
+		width: 9.5%; 
+	}
+
+}
+
