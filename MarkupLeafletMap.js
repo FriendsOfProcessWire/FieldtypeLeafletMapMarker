@@ -85,12 +85,10 @@ function MarkupLeafletMap() {
 
 		
 		if(marker.linkURL.length > 0) {
-			marker.on( 'click', function(e) {
-				marker.bindPopup("<b><a href='" + marker.linkURL + "'>" + title + "</a></b>").openPopup();
+			
+				marker.bindPopup("<b><a href='" + marker.linkURL + "'>" + title + "</a></b>");
 
-				//window.location.href = marker.linkURL; 
-			}); 
-		}
+			}
 		
 		
 
