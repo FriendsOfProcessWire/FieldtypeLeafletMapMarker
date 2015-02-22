@@ -4,7 +4,7 @@
 }
 
 input[readonly="readonly"], input[readonly] {
- color: grey;
+ color: grey !important;
 }
 
 .InputfieldLeafletMapMarkerToggle span {
