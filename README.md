@@ -1,7 +1,9 @@
 # FieldtypeLeafletLeafletMapMarker Module for ProcessWire 
 
 This is a port of the Map Marker Fieldtype by Ryan Cramer. Instead of Google maps it 
-uses Leaflet maps. Google maps geocoding is still used for geocoding default lat/lng values.
+uses Leaflet maps. Google maps geocoding is still used for geocoding default lat/lng values under field settings.
+
+For geocoding on page editing the module uses Per Liedmans [leaflet-control-geocoder] (https://github.com/perliedman/leaflet-control-geocoder)
 
 This Fieldtype for ProcessWire holds an address or location name, and automatically
 geocodes the address to latitude/longitude using Leaflet Maps API. The resulting 
