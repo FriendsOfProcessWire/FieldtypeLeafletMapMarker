@@ -6,7 +6,7 @@ uses Leaflet maps. Google maps geocoding is still used for geocoding default lat
 For geocoding on page editing the module uses Per Liedmans [leaflet-control-geocoder] (https://github.com/perliedman/leaflet-control-geocoder)
 
 This Fieldtype for ProcessWire holds an address or location name, and automatically
-geocodes the address to latitude/longitude using Leaflet Maps API. The resulting 
+geocodes the address to latitude/longitude using leaflet-control-geocoder. The resulting 
 values may be used to populate any kind of map (whether Leaflet Maps or another). 
 
 This Fieldtype was created to serve as an example of creating a custom Fieldtype and 
