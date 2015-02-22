@@ -4,6 +4,9 @@
  * Renders maps for the FieldtypeLeafletMapMarker module
  * 
  * ProcessWire 2.x 
+ * Port of Google Map Markup by Ryan Cramer
+ * Copyright (C) 2013 by Ryan Cramer
+ 
  * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
  * 
@@ -11,8 +14,8 @@
  *
  * Javascript Usage:
  * =================
- * var map = new MarkupGoogleMap();
- * map.setOption('any-google-maps-option', 'value'); 
+ * var map = new MarkupLeafletMap();
+ * map.setOption('any-leaflet-maps-option', 'value'); 
  * map.setOption('zoom', 12); // example
  * 
  * // init(container ID, latitude, longitude):

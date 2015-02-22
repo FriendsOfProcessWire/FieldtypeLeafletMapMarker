@@ -3,13 +3,16 @@
 /**
  * ProcessWire Leaflet Map Marker Inputfield
  *
+ * Port of Google Map Marker Inputfield by Ryan Cramer
+ *
  * Provides the admin control panel inputs for FieldtypeLeafletMapMarker
  * 
  * For documentation about the fields used in this class, please see:  
  * /wire/core/Fieldtype.php
  * 
  * ProcessWire 2.x 
- * Copyright (C) 2013 by Ryan Cramer 
+ * Copyright (C) 2015 by Mats Neander
+ * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
  * 
  * http://processwire.com
