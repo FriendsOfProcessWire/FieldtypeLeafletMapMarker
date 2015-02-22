@@ -1,8 +1,11 @@
-# FieldtypeMapMarker Module for ProcessWire 
+# FieldtypeLeafletMapMarker Module for ProcessWire 
+
+This is a port of the Map Marker Fieldtype by Ryan Cramer. Instead of Google maps it 
+uses Leaflet maps. Google maps geocoding is still used for geocoding default lat/lng values.
 
 This Fieldtype for ProcessWire holds an address or location name, and automatically
-geocodes the address to latitude/longitude using Google Maps API. The resulting 
-values may be used to populate any kind of map (whether Google Maps or another). 
+geocodes the address to latitude/longitude using Leaflet Maps API. The resulting 
+values may be used to populate any kind of map (whether Leaflet Maps or another). 
 
 This Fieldtype was created to serve as an example of creating a custom Fieldtype and 
 Inputfield that contains multiple pieces of data. Though the Fieldtype has now gone
@@ -11,18 +14,17 @@ the simplest example of how to implement a Fieldtype/Inputfield, though it is ve
 effective and useful. 
 
 MapMarker also has a corresponding Inputfield and Markup module, named
-InputfieldMapMarker and MarkupGoogleMap. When you install FieldtypeMapMarker, the
+InputfieldMapMarker and MarkupLeafletMap. When you install FieldtypeMapMarker, the
 Inputfield will also be installed and used for input on the admin side. Installation
-of MarkupGoogleMap is optional. It provides a simple way to render Google maps with
+of MarkupLeafletMap is optional. It provides a simple way to render Leaflet maps with
 the data managed by FieldtypeMapMarker. 
 
-This Fieldtype has a [support forum](http://processwire.com/talk/index.php/topic,752.0.html)
 
-## Using Map Marker
+## Using Leaflet Map Marker
 
 ### How to install
 
-1. Copy all of the files for this module into /site/modules/FieldtypeMapMarker/
+1. Copy all of the files for this module into /site/modules/FieldtypeLeafletMapMarker/
 
 2. In your admin, go to the Modules screen and "check for new modules." Click *install*
    for the Map Marker Fieldtype. 
@@ -39,7 +41,7 @@ This Fieldtype has a [support forum](http://processwire.com/talk/index.php/topic
 
 2. Type in a location or address into the "address" box for the map field. Then click 
    outside of the address, and the Javascript geocoder should automatically populate the
-   latitude, longitude and map location. The Google geocoder will accept full addresses
+   latitude, longitude and map location. The Leaflet geocoder will accept full addresses
    or known location names. For instance, you could type in "Disney Land" and it knows
    how to find locations like that. 
 
@@ -50,7 +52,7 @@ This Fieldtype has a [support forum](http://processwire.com/talk/index.php/topic
 
 ### How to use from the API, in your template files 
 
-In your template files, you can utilize this data for your own Google Maps (or anything 
+In your template files, you can utilize this data for your own Leaflet Maps (or anything 
 else that you might need latitude/longitude for). 
 
 Lets assume that your field is called 'map'. Here is how you would access the
@@ -64,23 +66,23 @@ echo $page->map->zoom;		// outputs the zoom level
 
 -------------
 
-## Markup Google Map
+## Markup Leaflet Map
 
-This package also comes with a module called MarkupGoogleMap. It provides a simple means
-of outputting a Google Map based on the data managed by FieldtypeMapMarker. To install,
-simply click "install" for the Google Maps (Markup) module. This is a Markup module, 
+This package also comes with a module called MarkupLeafletMap. It provides a simple means
+of outputting a Leaflet Map based on the data managed by FieldtypeMapMarker. To install,
+simply click "install" for the Leaflet Maps (Markup) module. This is a Markup module, 
 meaning it exists primarily to generate markup for output on the front-end of your site.
 
 ### How to use
 
 Add this somewhere before your closing `</head>` tag:
 `````````
-<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>
+<script type='text/javascript' src='https://maps.Leafletapis.com/maps/api/js?sensor=false'></script>
 `````````
 
 In the location where you want to output your map, place the following in your template file:
 `````````
-$map = $modules->get('MarkupGoogleMap'); 
+$map = $modules->get('MarkupLeafletMap'); 
 echo $map->render($page, 'map'); 
 `````````
 In the above, $page is the Page object that has the 'map' field. Rreplace 'map' with the name of 
@@ -89,13 +91,13 @@ your FieldtypeMap field
 To render a map with multiple markers on it, specify a PageArray rather than a single $page: 
 `````````
 $items = $pages->find("template=something, map!='', sort=title"); 
-$map = $modules->get('MarkupGoogleMap'); 
+$map = $modules->get('MarkupLeafletMap'); 
 echo $map->render($items, 'map'); 
 `````````
 
 To specify options, provide a 3rd argument with an options array:
 `````````
-$map = $modules->get('MarkupGoogleMap'); 
+$map = $modules->get('MarkupLeafletMap'); 
 echo $map->render($items, 'map', array('height' => '500px')); 
 `````````
 
@@ -119,7 +121,7 @@ Map type: ROADMAP, HYBRID or SATELLITE (type: string; default: from your field s
 Map ID attribute (type: string; default: mgmap)
 
 `class`   
-Map class attribute (type: string; default: MarkupGoogleMap)
+Map class attribute (type: string; default: MarkupLeafletMap)
 
 `lat`   
 Map center latitude (type: string|float; default: from your field settings)  
