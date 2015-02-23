@@ -49,7 +49,7 @@ function MarkupLeafletMap() {
 	this.init = function(mapID, lat, lng) {
 		if(lat != 0) this.map = L.map(mapID, {center: [lat, lng], zoom: this.options.zoom} );
 		
-		L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(this.map);
 
