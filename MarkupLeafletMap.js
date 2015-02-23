@@ -59,7 +59,7 @@ function MarkupLeafletMap() {
 		this.options[key] = value; 
 	}
 
-	var markers = new L.MarkerClusterGroup();
+	var markers = new L.MarkerClusterGroup({polygonOptions: {color: 'teal', weight: 1, opacity: .39, lineJoin: 'round'}});
 	var marker = '';
 
 	this.addMarker = function(lat, lng, url, title) {
