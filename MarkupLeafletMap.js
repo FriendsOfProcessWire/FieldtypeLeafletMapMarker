@@ -59,7 +59,7 @@ function MarkupLeafletMap() {
 		this.options[key] = value; 
 	}
 
-	
+	var markers = new L.MarkerClusterGroup();
 
 	this.addMarker = function(lat, lng, url, title) {
 		if(lat == 0.0) return;
@@ -75,8 +75,11 @@ function MarkupLeafletMap() {
 		}; 
 	
 		
-		var marker = L.marker(latLng, markerOptions).addTo(this.map);
+		var marker = L.marker(latLng, markerOptions);
 
+		
+		markers.addLayer(marker);
+		this.map.addLayer(markers);
 
 		this.markers[this.numMarkers] = marker;
 		this.numMarkers++;
