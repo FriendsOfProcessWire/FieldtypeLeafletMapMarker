@@ -81,6 +81,12 @@ Add this somewhere before your closing `</head>` tag:
 `````````
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+ <link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>styles/MarkerCluster.css" />
+ <link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>styles/MarkerCluster.Default.css" />
+ <script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/leaflet.markercluster.js"></script>
+
+
+
 `````````
 
 In the location where you want to output your map, place the following in your template file:
