@@ -49,7 +49,7 @@ function MarkupLeafletMap() {
 	this.init = function(mapID, lat, lng) {
 		if(lat != 0) this.map = L.map(mapID, {center: [lat, lng], zoom: this.options.zoom} );
 		
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(this.map);
 
@@ -60,6 +60,7 @@ function MarkupLeafletMap() {
 	}
 
 	var markers = new L.MarkerClusterGroup();
+	var marker = '';
 
 	this.addMarker = function(lat, lng, url, title) {
 		if(lat == 0.0) return;
@@ -75,14 +76,19 @@ function MarkupLeafletMap() {
 		}; 
 	
 		
-		var marker = L.marker(latLng, markerOptions);
+		marker = L.marker(latLng, markerOptions);
 
-		
+			
+
 		markers.addLayer(marker);
 		this.map.addLayer(markers);
 
+	
+	
+
 		this.markers[this.numMarkers] = marker;
 		this.numMarkers++;
+		
 
 		if(url.length > 0) marker.linkURL = url;
 
@@ -93,11 +99,9 @@ function MarkupLeafletMap() {
 
 			}
 		
-		
-
-		
 	}
 
+	
 	this.fitToMarkers = function() {
 
 		var map = this.map;
@@ -112,6 +116,8 @@ function MarkupLeafletMap() {
 
 
 	}
+
+
 
 
 	

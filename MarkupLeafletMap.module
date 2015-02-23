@@ -194,6 +194,7 @@ class MarkupLeafletMap extends WireData implements Module {
 		}
 
 		if(count($pageArray) > 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); ";
+		
 
 		$out .= "</script>";
 
