@@ -51,7 +51,9 @@ var InputfieldLeafletMapMarker = {
 
 		$( ".InputfieldLeafletMapMarkerAddress" ).on( "click", function() {
 		  	$(".leaflet-control-geocoder.leaflet-control").toggleClass("leaflet-control-geocoder-expanded");
-		  	$(".leaflet-control-geocoder.leaflet-control .undefined").focus();
+		  	setTimeout(function() { $('input.undefined').focus() }, 300);
+
+
 		});
 		
 		
