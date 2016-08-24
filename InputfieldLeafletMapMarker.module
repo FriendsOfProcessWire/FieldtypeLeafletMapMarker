@@ -58,10 +58,10 @@ class InputfieldLeafletMapMarker extends Inputfield {
         $class = $this->className();
         $assetPath = $this->config->urls->$class;
 
-        $this->config->styles->add(($this->config->https ? 'https' : 'http') . '://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css');
+        $this->config->styles->add(($this->config->https ? 'https' : 'http') . '://npmcdn.com/leaflet@0.7.7/dist/leaflet.css');
         $this->config->styles->add($assetPath . 'Control.Geocoder.css');
         //$this->config->styles->add($this->config->urls->$class . 'InputfieldLeafletMapMarker.css');
-        $this->config->scripts->add(($this->config->https ? 'https' : 'http') . '://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js');
+        $this->config->scripts->add(($this->config->https ? 'https' : 'http') . '://npmcdn.com/leaflet@0.7.7/dist/leaflet.js');
         $this->config->scripts->add($assetPath . 'assets/leaflet-providers/leaflet-providers.js');
         $this->config->scripts->add($assetPath . 'Control.Geocoder.js');
 

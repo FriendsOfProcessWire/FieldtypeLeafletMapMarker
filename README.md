@@ -82,6 +82,12 @@ section so simply add this somewhere before your closing `</head>` tag:
 <?php echo $map->getLeafletMapHeaderLines(); ?>
 ```
 
+If you already load FontAwesome elsewhere in your header and you do not want it included as part of the Leaflet Map header lines, use the following version:
+```
+<?php echo $map->getLeafletMapHeaderLines(false); ?>
+```
+
+
 In the location within the body of your HTML where you want your map to appear, place the following:
 `````````
 <?php echo $map->render($page, 'YOUR MARKER FIELD'); ?>
