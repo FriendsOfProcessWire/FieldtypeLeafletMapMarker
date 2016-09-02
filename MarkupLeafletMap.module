@@ -165,12 +165,12 @@ class MarkupLeafletMap extends WireData implements Module {
         }
         $lines .= <<<LINES
         <!-- Styles supporting the use of Leaflet.js -->
-        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.Default.css" />
 
         <!-- Scripts supporting the use of Leaflet.js -->
-        <script type="text/javascript" src="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-markercluster/leaflet.markercluster.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-providers/leaflet-providers.js"></script>
         <script type="text/javascript" src="{$url}MarkupLeafletMap.js"></script>
