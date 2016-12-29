@@ -72,7 +72,6 @@ var InputfieldLeafletMapMarker = {
 
 
         $lng.change(function(event) {
-
             marker.setLatLng([$lat.val(),$lng.val()]);
             map.setView(marker.getLatLng(), 9);
             coder.reverse(marker.getLatLng(), map.options.crs.scale(map.getZoom()), function(results) {
@@ -95,8 +94,8 @@ var InputfieldLeafletMapMarker = {
 
         marker.on('dragend', function(event) {
             var result = marker.getLatLng();
-            $lat.val(result.lat).trigger('change');
-            $lng.val(result.lng).trigger('change');
+            $lat.val(result.lat).trigger('change.custom');
+            $lng.val(result.lng).trigger('change.custom');
 
             //reverse geocoding displays in the adress field
             coder.reverse(marker.getLatLng(), map.options.crs.scale(map.getZoom()), function(results) {
