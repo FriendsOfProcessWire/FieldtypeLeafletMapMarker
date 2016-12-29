@@ -26,7 +26,7 @@ var InputfieldLeafletMapMarker = {
         var coder = L.Control.Geocoder.nominatim(),
         geocoder = L.Control.geocoder({
             geocoder: geocoder, placeholder: ''
-        }).addTo(map)
+        }).addTo(map);
 
         var marker = L.marker(
             [lat,lng],
@@ -95,8 +95,8 @@ var InputfieldLeafletMapMarker = {
 
         marker.on('dragend', function(event) {
             var result = marker.getLatLng();
-            $lat.val(result.lat);
-            $lng.val(result.lng);
+            $lat.val(result.lat).trigger('change');
+            $lng.val(result.lng).trigger('change');
 
             //reverse geocoding displays in the adress field
             coder.reverse(marker.getLatLng(), map.options.crs.scale(map.getZoom()), function(results) {
