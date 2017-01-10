@@ -179,18 +179,24 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
             return;
         }
 
+        //PDO update by Ryan
         if($schemaVersion == 0) {
-            // update schema to v1: add 'zoom' column
-            $schemaVersion = 1;
-            $result = $this->db->query("SHOW TABLES LIKE '$field->table'");
-            $row = $result->fetch_row();
+            // update schema to v1: add 'zoom' column   
+            $schemaVersion = 1; 
+            $database = $this->wire('database');
+            $table = $database->escapeTable($field->getTable());
+            $query = $database->prepare("SHOW TABLES LIKE '$table'"); 
+            $query->execute();
+            $row = $query->fetch(\PDO::FETCH_NUM); 
+            $query->closeCursor();
             if(!empty($row)) {
-                $result = $this->db->query("SHOW COLUMNS FROM `$field->table` WHERE field='zoom'");
-                if(!$result->num_rows) try {
-                    $result = $this->db->query("ALTER TABLE `$field->table` ADD zoom $schema[zoom] AFTER status");
-                    $this->message("Added 'zoom' column to '$field->table'");
+                $query = $database->prepare("SHOW COLUMNS FROM `$table` WHERE field='zoom'"); 
+                $query->execute();
+                if(!$query->rowCount()) try {
+                    $database->exec("ALTER TABLE `$table` ADD zoom $schema[zoom] AFTER status");
+                    $this->message("Added 'zoom' column to '$field->table'"); 
                 } catch(Exception $e) {
-                    $this->error($e->getMessage());
+                    $this->error($e->getMessage()); 
                 }
             }
         }
@@ -206,7 +212,7 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
      */
     public function getMatchQuery($query, $table, $subfield, $operator, $value) {
         if(!$subfield || $subfield == 'address') $subfield = 'data';
-        if($subfield != 'data' || wire('db')->isOperator($operator)) {
+        if($subfield != 'data' || wire('database')->isOperator($operator)) {
             // if dealing with something other than address, or operator is native to SQL,
             // then let Fieldtype::getMatchQuery handle it instead
             return parent::getMatchQuery($query, $table, $subfield, $operator, $value);
