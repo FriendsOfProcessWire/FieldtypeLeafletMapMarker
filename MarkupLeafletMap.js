@@ -14,7 +14,7 @@
  *
  * Javascript Usage:
  * =================
- * var map = new MarkupLeafletMap();
+ * var map = new jsMarkupLeafletMap();
  * map.setOption('any-leaflet-maps-option', 'value');
  * map.setOption('zoom', 12); // example
  *
@@ -30,7 +30,7 @@
  *
  */
 
-function MarkupLeafletMap() {
+function jsMarkupLeafletMap() {
 
     this.map = null;
     this.markers = [];

@@ -227,7 +227,7 @@ LINES;
         $out .= "<div id='$id' class='$options[class]'$style></div>";
 
         $inlineScript = "<script type='text/javascript'>\n$(function() {\n" .
-            "var $id = new MarkupLeafletMap();\n" .
+            "var $id = new jsMarkupLeafletMap();\n" .
             "$id.setOption('zoom', $zoom);\n" .
             $options['init'] . "\n" .
             "$id.init('$id', $lat, $lng, '$provider');\n" .
