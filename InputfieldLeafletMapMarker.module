@@ -24,7 +24,7 @@ class InputfieldLeafletMapMarker extends Inputfield {
     public static function getModuleInfo() {
         return array(
             'title' => 'Leaflet Map Marker',
-            'version' => 207,
+            'version' => '2.8.0',
             'summary' => "Provides input for the LeafletMapMarker Fieldtype",
             'requires' => 'FieldtypeLeafletMapMarker',
             'icon' => 'map-marker',
