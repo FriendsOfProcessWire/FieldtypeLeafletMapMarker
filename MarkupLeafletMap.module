@@ -5,7 +5,7 @@
  * Port of Google Map Markup by Ryan Cramer
  * Renders maps for the FieldtypeMapMarker module
  *
- * ProcessWire 2.x
+ * ProcessWire 3.x
  * Copyright (C) 2013 by Ryan Cramer
  * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
@@ -88,9 +88,9 @@ class MarkupLeafletMap extends WireData implements Module {
     public static function getModuleInfo() {
         return array(
             'title' => 'LeafletMap Markup',
-            'version' => '2.8.0',
+            'version' => '3.0.0',
             'summary' => 'Renders Leaflet Maps for the LealetMapMarker Fieldtype',
-            'requires' => 'FieldtypeLeafletMapMarker',
+            'requires' => 'ProcessWire>=3.0.0, FieldtypeLeafletMapMarker',
             'installs' => 'MarkupAddInlineScript',
         );
     }
