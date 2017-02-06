@@ -1,4 +1,4 @@
-<?php
+<?php namespace Processwire;
 
 /**
  * Class to hold an address and geocode it to latitude/longitude

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Processwire;
 
 class MarkupAddInlineScript extends WireData implements Module {
 
