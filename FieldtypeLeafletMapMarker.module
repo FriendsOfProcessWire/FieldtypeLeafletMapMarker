@@ -181,22 +181,22 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
 
         //PDO update by Ryan
         if($schemaVersion == 0) {
-            // update schema to v1: add 'zoom' column   
-            $schemaVersion = 1; 
+            // update schema to v1: add 'zoom' column
+            $schemaVersion = 1;
             $database = $this->wire('database');
             $table = $database->escapeTable($field->getTable());
-            $query = $database->prepare("SHOW TABLES LIKE '$table'"); 
+            $query = $database->prepare("SHOW TABLES LIKE '$table'");
             $query->execute();
             $row = $query->fetch(\PDO::FETCH_NUM); 
             $query->closeCursor();
             if(!empty($row)) {
-                $query = $database->prepare("SHOW COLUMNS FROM `$table` WHERE field='zoom'"); 
+                $query = $database->prepare("SHOW COLUMNS FROM `$table` WHERE field='zoom'");
                 $query->execute();
                 if(!$query->rowCount()) try {
                     $database->exec("ALTER TABLE `$table` ADD zoom $schema[zoom] AFTER status");
-                    $this->message("Added 'zoom' column to '$field->table'"); 
+                    $this->message("Added 'zoom' column to '$field->table'");
                 } catch(Exception $e) {
-                    $this->error($e->getMessage()); 
+                    $this->error($e->getMessage());
                 }
             }
         }
