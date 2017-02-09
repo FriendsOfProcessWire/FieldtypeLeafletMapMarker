@@ -70,9 +70,8 @@ function jsMarkupLeafletMap() {
         this.markers[this.numMarkers] = marker;
         this.numMarkers++;
 
-        if(url.length > 0) marker.linkURL = url;
-
-        if(marker.linkURL.length > 0) {
+        if(url.length > 0) {
+            marker.linkURL = url;
             if (extra.length > 0) {
                 extra = '<br />' + extra;
             }
@@ -92,9 +91,9 @@ function jsMarkupLeafletMap() {
         this.markers[this.numMarkers] = marker;
         this.numMarkers++;
 
-        if(url.length > 0) marker.linkURL = url;
+        if(url.length > 0) {
+            marker.linkURL = url;
 
-        if(marker.linkURL.length > 0) {
             if (extra.length > 0) {
                 extra = '<br />' + extra;
             }
