@@ -26,7 +26,7 @@ class InputfieldLeafletMapMarker extends Inputfield {
             'title' => 'Leaflet Map Marker',
             'version' => '3.0.1',
             'summary' => "Provides input for the LeafletMapMarker Fieldtype",
-            'requires' => 'Processwire>=3.0.0, FieldtypeLeafletMapMarker',
+            'requires' => 'ProcessWire>=3.0.0, FieldtypeLeafletMapMarker',
             'icon' => 'map-marker',
         );
     }
