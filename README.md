@@ -127,8 +127,14 @@ Option | Notes
 `markerIconColour` | The default colour the of the FontAwesome icon (type: string; default 'white')
 `markerColour` | The default colour of the marker body that surrounds the icon. (type: string; default 'darkblue'.) See Leaflet.AwesomeMarker's [markerColor](https://github.com/lvoogdt/Leaflet.awesome-markers#properties) entry for the available colours - they are limited.
 `markerFormatter` | A PHP callback function (taking a PW `$page` and AwesomeMarker `$marker_options` as arguments) for customising the look of any marker on the map. This is called once for each marker being placed on the map and allows the defaults to be overridden for each marker.
+`provider` | Defines which tile layer provider to use. (type: string; default: OpenStreetMap.Mapnik)
 
 ----------
+
+## Customising A Map's Tile Layer
+
+You can use the `provider` option to tell the map which tile layer to use. Available layers can be previewed [here](https://leaflet-extras.github.io/leaflet-providers/preview/index.html).
+
 
 ## Customising A Marker's Visuals and Popup Contents
 
