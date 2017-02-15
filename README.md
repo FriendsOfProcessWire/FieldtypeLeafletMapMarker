@@ -210,3 +210,4 @@ _NB._ The example above uses a PW image field called 'image' that is configured 
 * [gebeer](https://processwire.com/talk/profile/1920-gebeer/) extended Mats' work, adding the Inline Scripts module.
 * [netcarver](https://processwire.com/talk/profile/465-netcarver/) added callback formatters for marker and popover content generation. He also added AwesomeMarker
   support.
+* [Glenn McLelland](https://github.com/gmclelland) fixes for PW3 branch and provider documentation.
