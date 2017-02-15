@@ -11,7 +11,7 @@ class MarkupAddInlineScript extends WireData implements Module {
     public static function getModuleInfo() {
         return array(
             'title'    => 'Inline Scripts',
-            'version'  => '3.0.1',
+            'version'  => '3.0.2',
             'summary'  => 'adds inline script before </body>',
             'singular' => true,
             'autoload' => true,
