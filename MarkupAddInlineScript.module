@@ -28,7 +28,7 @@ class MarkupAddInlineScript extends WireData implements Module {
      *
      */
     public function init() {
-        $this->addHookAfter('Page::render', $this, 'addInlineScript');
+        $this->addHookAfter('Page::render', $this, 'addInlineScript', array('priority'=>'200'));
     }
 
     public function addInlineScript($event) {
