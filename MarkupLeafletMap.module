@@ -53,6 +53,9 @@
  * // set to true to automatically adjust maximum zoom level to default zoom
  * 'maxZoom' => true
  *
+ * // set to false to disable the scroll wheel zoom
+ * 'scrollWheelZoom' => true
+ *
  * // map ID attribute
  * 'id' => "mgmap"
  *
@@ -137,6 +140,7 @@ class MarkupLeafletMap extends WireData implements Module {
             'lng' => $field->defaultLng,
             'provider' => $field->defaultProvider,
             'maxZoom' => false,
+            'scrollWheelZoom' => true,
             'icon' => '', // url to icon (blank=use default)
             'iconHover' => '', // url to icon when hovered (default=none)
             'shadow' => '', // url to icon shadow (blank=use default)
@@ -229,6 +233,7 @@ LINES;
         $inlineScript = "<script type='text/javascript'>\n$(function() {\n" .
             "var $id = new jsMarkupLeafletMap();\n" .
             "$id.setOption('zoom', $zoom);\n" .
+            "$id.setOption('scrollWheelZoom', {$options['scrollWheelZoom']});\n" .
             $options['init'] . "\n" .
             "$id.init('$id', $lat, $lng, '$provider');\n" .
             "var default_marker_icon = L.AwesomeMarkers.icon({ icon: '{$options['markerIcon']}', iconColor: '{$options['markerIconColour']}', prefix: 'fa', markerColor: '{$options['markerColour']}' });\n";
