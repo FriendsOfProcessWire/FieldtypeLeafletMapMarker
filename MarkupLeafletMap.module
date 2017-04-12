@@ -165,12 +165,12 @@ class MarkupLeafletMap extends WireData implements Module {
         }
         $lines .= <<<LINES
         <!-- Styles supporting the use of Leaflet.js -->
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.Default.css" />
 
         <!-- Scripts supporting the use of Leaflet.js -->
-        <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-markercluster/leaflet.markercluster.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-providers/leaflet-providers.js"></script>
         <script type="text/javascript" src="{$url}MarkupLeafletMap.js"></script>
@@ -226,7 +226,7 @@ LINES;
 
         $out .= "<div id='$id' class='$options[class]'$style></div>";
 
-        $inlineScript = "<script type='text/javascript'>\nvar mymap;\n $(function() {\n" .
+        $inlineScript = "<script type='text/javascript'>\n$(function() {\n" .
             "var $id = new jsMarkupLeafletMap();\n" .
             "$id.setOption('zoom', $zoom);\n" .
             $options['init'] . "\n" .
@@ -273,7 +273,7 @@ LINES;
             if ($options['maxZoom']) $inlineScript .= "$id.setMaxZoom();\n";
         }
 
-        $inlineScript .= "mymap = $id;\n});\n</script>";
+        $inlineScript .= "});\n</script>";
 
         $this->page->inlineScript = $inlineScript;
 
