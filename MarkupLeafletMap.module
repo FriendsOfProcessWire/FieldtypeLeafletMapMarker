@@ -17,8 +17,8 @@
  *
  * Add this somewhere before your closing </head> tag:
  *
- *     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
- *     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+ *     <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.3/dist/leaflet.css" />
+ *     <script src="https://unpkg.com/leaflet@0.7.3/dist/leaflet.js"></script>
  *
  * In the location where you want to output your map, do the following in your template file:
  *
@@ -106,10 +106,10 @@ class MarkupLeafletMap extends WireData implements Module {
         $class = $this->classname();
         $assetPath = $this->config->urls->$class;
 
-        $this->config->styles->add('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css');
+        $this->config->styles->add('https://unpkg.com/leaflet@0.7.3/dist/leaflet.css');
         $this->config->styles->add($assetPath . "assets/leaflet-markercluster/MarkerCluster.css");
         $this->config->styles->add($assetPath . "assets/leaflet-markercluster/MarkerCluster.Default.css");
-        $this->config->scripts->add('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js');
+        $this->config->scripts->add('https://unpkg.com/leaflet@0.7.3/dist/leaflet.js');
         $this->config->scripts->add($assetPath . 'assets/leaflet-markercluster/leaflet.markercluster.js');
         $this->config->scripts->add($assetPath . 'assets/leaflet-providers/leaflet-providers.js');
         $this->config->scripts->add($assetPath . 'MarkupLeafletMap.js');
