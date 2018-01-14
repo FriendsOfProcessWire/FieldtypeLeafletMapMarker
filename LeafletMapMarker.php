@@ -36,6 +36,7 @@ class LeafletMapMarker extends WireData {
         $this->set('status', 0);
         $this->set('zoom', 0);
         $this->set('provider', '');
+        $this->set('raw', '');
         // temporary runtime property to indicate the geocode should be skipped
         $this->set('skipGeocode', false);
     }
@@ -56,6 +57,8 @@ class LeafletMapMarker extends WireData {
         } else if($key == 'zoom') {
             $value = (int) $value;
         } else if($key == 'provider') {
+            $value = $value;
+        } else if($key == 'raw') {
             $value = $value;
         }
 
@@ -89,6 +92,7 @@ class LeafletMapMarker extends WireData {
             else $this->status = -1;
             $this->lat = 0;
             $this->lng = 0;
+            $this->raw = '';
             return $this->status;
         }
 
@@ -98,6 +102,7 @@ class LeafletMapMarker extends WireData {
 
         $this->lat = $location['lat'];
         $this->lng = $location['lng'];
+        $this->raw = json_encode($json['results'][0]);
 
         $statusString = $json['status'] . '_' . $locationType;
         $status = array_search($statusString, $this->geocodeStatuses);

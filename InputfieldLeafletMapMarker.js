@@ -39,6 +39,7 @@ var InputfieldLeafletMapMarker = {
         var $lng = $map.siblings(".InputfieldLeafletMapMarkerLng").find("input[type=text]");
         var $addr = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[type=text]");
         var $addrJS = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[type=hidden]");
+        var $raw = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[name=_map_raw]");
         var $toggle = $map.siblings(".InputfieldLeafletMapMarkerToggle").find("input[type=checkbox]");
         var $zoom = $map.siblings(".InputfieldLeafletMapMarkerZoom").find("input[type=number]");
         var $notes = $map.siblings(".notes");
@@ -66,6 +67,7 @@ var InputfieldLeafletMapMarker = {
                 var r = results[0];
                 if (r) {
                     $addr.val(r.name);
+                    $raw.val(JSON.stringify(r.properties));
                 }
             })
         });
@@ -78,6 +80,7 @@ var InputfieldLeafletMapMarker = {
                 var r = results[0];
                 if (r) {
                     $addr.val(r.name);
+                    $raw.val(JSON.stringify(r.properties));                 
                 }
             })
         });
@@ -89,6 +92,7 @@ var InputfieldLeafletMapMarker = {
             $lat.val(result.center.lat);
             $lng.val(result.center.lng);
             $addr.val(result.name);
+            $raw.val(JSON.stringify(result.properties));
         };
 
 
@@ -102,6 +106,7 @@ var InputfieldLeafletMapMarker = {
                 var r = results[0];
                 if (r) {
                     $addr.val(r.name);
+                    $raw.val(JSON.stringify(r.properties));
                 }
             })
         });
