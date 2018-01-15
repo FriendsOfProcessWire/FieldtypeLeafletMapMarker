@@ -39,7 +39,7 @@ var InputfieldLeafletMapMarker = {
         var $lng = $map.siblings(".InputfieldLeafletMapMarkerLng").find("input[type=text]");
         var $addr = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[type=text]");
         var $addrJS = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[type=hidden]");
-        var $raw = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[name=_map_raw]");
+        var $raw = $map.siblings(".InputfieldLeafletMapMarkerAddress").find("input[name$=_raw]");
         var $toggle = $map.siblings(".InputfieldLeafletMapMarkerToggle").find("input[type=checkbox]");
         var $zoom = $map.siblings(".InputfieldLeafletMapMarkerZoom").find("input[type=number]");
         var $notes = $map.siblings(".notes");
