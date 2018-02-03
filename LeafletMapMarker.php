@@ -58,8 +58,6 @@ class LeafletMapMarker extends WireData {
             $value = (int) $value;
         } else if($key == 'provider') {
             $value = $value;
-        } else if($key == 'raw') {
-            $value = $value;
         }
 
         return parent::set($key, $value);
