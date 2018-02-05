@@ -24,7 +24,7 @@ class InputfieldLeafletMapMarker extends Inputfield {
     public static function getModuleInfo() {
         return array(
             'title' => 'Leaflet Map Marker',
-            'version' => '3.0.2',
+            'version' => '3.0.3',
             'summary' => "Provides input for the LeafletMapMarker Fieldtype",
             'requires' => 'ProcessWire>=3.0.0, FieldtypeLeafletMapMarker',
             'icon' => 'map-marker',
@@ -127,6 +127,7 @@ class InputfieldLeafletMapMarker extends Inputfield {
             <input readonly type='text' id='{$id}' name='{$name}' value='{$address}'  /><br />
             </label>
             <input type='hidden' id='_{$name}_js_geocode_address' name='_{$name}_js_geocode_address' value='' />
+            <input type='hidden' id='_{$id}_raw' name='_{$name}_raw' value='{$marker->raw}' />
             </p>
 
 
@@ -205,6 +206,8 @@ _OUT;
         if(is_null($status)) $marker->set('status', LeafletMapMarker::statusNoGeocode); // disable geocode
         else $marker->set('status', (int) $status);
 
+        $raw = $input["_{$name}_raw"];
+        $marker->set('raw', $raw);
         // $provider = $input["_{$name}_provider"];
         // $marker->set('provider', $provider);
 
@@ -307,7 +310,8 @@ _OUT;
             "\$page->{$this->name}->address\n" .
             "\$page->{$this->name}->lat\n" .
             "\$page->{$this->name}->lng\n" .
-            "\$page->{$this->name}->zoom" .
+            "\$page->{$this->name}->zoom\n" .
+            "\$page->{$this->name}->raw" .            
             "</pre>";
 
         $inputfields->add($field);
