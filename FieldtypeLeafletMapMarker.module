@@ -174,8 +174,8 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
      *
      */
     protected function updateDatabaseSchema(Field $field, array $schema) {
-
-        $requiredVersion = 1;
+        // increment the requiredVersion number with each new database schema change
+        $requiredVersion = 2;
         $schemaVersion = (int) $field->schemaVersion;
 
         if($schemaVersion >= $requiredVersion) {
