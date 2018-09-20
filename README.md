@@ -53,12 +53,13 @@ _If the geocoding does not work, please ensure that your browser is not blocking
 In your template files, you can utilize this data for your own Leaflet Maps (or anything else that you might need latitude/longitude for).
 
 Lets assume that your field is called 'map'. Here is how you would access the components of it from the API:
+
 ```````````
 echo $page->map->address;	// outputs the address you entered
 echo $page->map->lat; 		// outputs the latitude
 echo $page->map->lng; 		// outputs the longitude
 echo $page->map->zoom;		// outputs the zoom level
-`````````
+```````````
 
 -------------
 
@@ -128,7 +129,6 @@ Option | Notes
 `markerColour` | The default colour of the marker body that surrounds the icon. (type: string; default 'darkblue'.) See Leaflet.AwesomeMarker's [markerColor](https://github.com/lvoogdt/Leaflet.awesome-markers#properties) entry for the available colours - they are limited.
 `markerFormatter` | A PHP callback function (taking a PW `$page` and AwesomeMarker `$marker_options` as arguments) for customising the look of any marker on the map. This is called once for each marker being placed on the map and allows the defaults to be overridden for each marker.
 `provider` | Defines which tile layer provider to use. (type: string; default: OpenStreetMap.Mapnik)
-`scrollWheelZoom` | Whether to allow zooming with the mouse wheel. (type: boolean; default: true)
 
 ----------
 

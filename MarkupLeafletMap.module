@@ -1,11 +1,11 @@
-<?php namespace Processwire;
+<?php
 
 /**
  * ProcessWire Leaflet Map Markup
  * Port of Google Map Markup by Ryan Cramer
  * Renders maps for the FieldtypeMapMarker module
  *
- * ProcessWire 3.x
+ * ProcessWire 2.x
  * Copyright (C) 2013 by Ryan Cramer
  * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
@@ -17,8 +17,8 @@
  *
  * Add this somewhere before your closing </head> tag:
  *
- *     <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.3/dist/leaflet.css" />
- *     <script src="https://unpkg.com/leaflet@0.7.3/dist/leaflet.js"></script>
+ *     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+ *     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
  *
  * In the location where you want to output your map, do the following in your template file:
  *
@@ -52,9 +52,6 @@
  *
  * // set to true to automatically adjust maximum zoom level to default zoom
  * 'maxZoom' => true
- *
- * // set to false to disable the scroll wheel zoom
- * 'scrollWheelZoom' => true
  *
  * // map ID attribute
  * 'id' => "mgmap"
@@ -91,9 +88,9 @@ class MarkupLeafletMap extends WireData implements Module {
     public static function getModuleInfo() {
         return array(
             'title' => 'LeafletMap Markup',
-            'version' => '3.0.2',
+            'version' => '2.8.1',
             'summary' => 'Renders Leaflet Maps for the LealetMapMarker Fieldtype',
-            'requires' => 'ProcessWire>=3.0.0, FieldtypeLeafletMapMarker',
+            'requires' => 'FieldtypeLeafletMapMarker',
             'installs' => 'MarkupAddInlineScript',
         );
     }
@@ -106,10 +103,10 @@ class MarkupLeafletMap extends WireData implements Module {
         $class = $this->classname();
         $assetPath = $this->config->urls->$class;
 
-        $this->config->styles->add('https://unpkg.com/leaflet@0.7.3/dist/leaflet.css');
+        $this->config->styles->add('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css');
         $this->config->styles->add($assetPath . "assets/leaflet-markercluster/MarkerCluster.css");
         $this->config->styles->add($assetPath . "assets/leaflet-markercluster/MarkerCluster.Default.css");
-        $this->config->scripts->add('https://unpkg.com/leaflet@0.7.3/dist/leaflet.js');
+        $this->config->scripts->add('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js');
         $this->config->scripts->add($assetPath . 'assets/leaflet-markercluster/leaflet.markercluster.js');
         $this->config->scripts->add($assetPath . 'assets/leaflet-providers/leaflet-providers.js');
         $this->config->scripts->add($assetPath . 'MarkupLeafletMap.js');
@@ -140,7 +137,6 @@ class MarkupLeafletMap extends WireData implements Module {
             'lng' => $field->defaultLng,
             'provider' => $field->defaultProvider,
             'maxZoom' => false,
-            'scrollWheelZoom' => true,
             'icon' => '', // url to icon (blank=use default)
             'iconHover' => '', // url to icon when hovered (default=none)
             'shadow' => '', // url to icon shadow (blank=use default)
@@ -169,12 +165,12 @@ class MarkupLeafletMap extends WireData implements Module {
         }
         $lines .= <<<LINES
         <!-- Styles supporting the use of Leaflet.js -->
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.css" />
         <link rel="stylesheet" type="text/css" href="{$url}assets/leaflet-markercluster/MarkerCluster.Default.css" />
 
         <!-- Scripts supporting the use of Leaflet.js -->
-        <script type="text/javascript" src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-markercluster/leaflet.markercluster.js"></script>
         <script type="text/javascript" src="{$url}assets/leaflet-providers/leaflet-providers.js"></script>
         <script type="text/javascript" src="{$url}MarkupLeafletMap.js"></script>
@@ -233,7 +229,6 @@ LINES;
         $inlineScript = "<script type='text/javascript'>\n$(function() {\n" .
             "var $id = new jsMarkupLeafletMap();\n" .
             "$id.setOption('zoom', $zoom);\n" .
-            "$id.setOption('scrollWheelZoom', {$options['scrollWheelZoom']});\n" .
             $options['init'] . "\n" .
             "$id.init('$id', $lat, $lng, '$provider');\n" .
             "var default_marker_icon = L.AwesomeMarkers.icon({ icon: '{$options['markerIcon']}', iconColor: '{$options['markerIconColour']}', prefix: 'fa', markerColor: '{$options['markerColour']}' });\n";
@@ -278,9 +273,10 @@ LINES;
             if ($options['maxZoom']) $inlineScript .= "$id.setMaxZoom();\n";
         }
 
-        $inlineScript .= "});\n</script>";
+        $inlineScript .= "\n});</script>";
 
         $this->page->inlineScript = $inlineScript;
+
 
         return $out;
     }

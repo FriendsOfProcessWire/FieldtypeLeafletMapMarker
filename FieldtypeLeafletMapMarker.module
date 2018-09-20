@@ -1,4 +1,4 @@
-<?php namespace Processwire;
+<?php
 
 /**
  * ProcessWire Leaflet Map Marker Fieldtype
@@ -8,7 +8,7 @@
  * For documentation about the fields used in this class, please see:
  * /wire/core/Fieldtype.php
  *
- * ProcessWire 3.x
+ * ProcessWire 2.x
  * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
  *
@@ -23,11 +23,10 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
     public static function getModuleInfo() {
         return array(
             'title' => 'Leaflet Map Marker',
-            'version' => '3.0.3',
+            'version' => '2.8.1',
             'summary' => 'Field that stores an address with latitude and longitude coordinates and has built-in geocoding capability with Leaflet Maps API.',
             'installs' => 'InputfieldLeafletMapMarker',
             'icon' => 'map-marker',
-            'requires' => 'ProcessWire>=3.0.0',
         );
     }
 
@@ -103,7 +102,6 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
         $marker->lng = $value['lng'];
         $marker->status = $value['status'];
         $marker->zoom = $value['zoom'];
-        $marker->raw = $value['raw'];
         // $marker->provider = $value['provider'];
         $marker->setTrackChanges(true);
 
@@ -134,8 +132,7 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
             'lat' => strlen($marker->lat) ? $marker->lat : 0,
             'lng' => strlen($marker->lng) ? $marker->lng : 0,
             'status' => $marker->status,
-            'zoom' => $marker->zoom,
-            'raw' => $marker->raw/*,
+            'zoom' => $marker->zoom/*,
             'provider' => $marker->provider*/
         );
 
@@ -157,7 +154,6 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
         $schema['lng'] = "FLOAT(10,6) NOT NULL DEFAULT 0";	// longitude
         $schema['status'] = "TINYINT NOT NULL DEFAULT 0";	// geocode status
         $schema['zoom'] = "TINYINT NOT NULL DEFAULT 0";		// zoom level (schema v1)
-        $schema['raw'] = "TEXT NOT NULL DEFAULT ''"; // raw google geocode data
         // $schema['provider'] = "VARCHAR(255) NOT NULL DEFAULT ''";
 
         $schema['keys']['latlng'] = "KEY latlng (lat, lng)";	// keep an index of lat/lng
@@ -174,8 +170,8 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
      *
      */
     protected function updateDatabaseSchema(Field $field, array $schema) {
-        // increment the requiredVersion number with each new database schema change
-        $requiredVersion = 2;
+
+        $requiredVersion = 1;
         $schemaVersion = (int) $field->schemaVersion;
 
         if($schemaVersion >= $requiredVersion) {
@@ -199,28 +195,6 @@ class FieldtypeLeafletMapMarker extends Fieldtype {
                 if(!$query->rowCount()) try {
                     $database->exec("ALTER TABLE `$table` ADD zoom $schema[zoom] AFTER status");
                     $this->message("Added 'zoom' column to '$field->table'");
-                } catch(Exception $e) {
-                    $this->error($e->getMessage());
-                }
-            }
-        }
-        
-        //PDO update by Patman15
-        if($schemaVersion == 1) {
-            // update schema to v2: add 'raw' column
-            $schemaVersion = 2;
-            $database = $this->wire('database');
-            $table = $database->escapeTable($field->getTable());
-            $query = $database->prepare("SHOW TABLES LIKE '$table'");
-            $query->execute();
-            $row = $query->fetch(\PDO::FETCH_NUM);
-            $query->closeCursor();
-            if(!empty($row)) {
-                $query = $database->prepare("SHOW COLUMNS FROM `$table` WHERE field='raw'");
-                $query->execute();
-                if(!$query->rowCount()) try {
-                    $database->exec("ALTER TABLE `$table` ADD raw $schema[raw] AFTER zoom");
-                    $this->message("Added 'raw' column to '$field->table'");
                 } catch(Exception $e) {
                     $this->error($e->getMessage());
                 }

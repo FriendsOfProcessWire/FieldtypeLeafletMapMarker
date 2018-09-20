@@ -31,7 +31,12 @@ input[readonly="readonly"], input[readonly] {
 
 .InputfieldLeafletMapMarkerZoom {
 	float: left;
-	width: 10%;
+	width: 5%;
+}
+
+.InputfieldLeafletMapMarkerClear{
+	float:left;
+	width: 5%;
 }
 
 .InputfieldLeafletMapMarker .notes {
@@ -44,6 +49,10 @@ input[readonly="readonly"], input[readonly] {
 }
 
 @media only screen and (min-width: 768px) {
+	
+	.InputfieldLeafletMapMarkerZoom{
+		padding-right: 1%;
+	}
 
 	.InputfieldLeafletMapMarkerAddress {
 		width: 38%;
@@ -69,7 +78,7 @@ input[readonly="readonly"], input[readonly] {
 
 	.InputfieldLeafletMapMarkerZoom {
 		float: left;
-		width: 9.5%;
+		width: 8%;
 	}
 
 }

@@ -1,4 +1,4 @@
-<?php namespace Processwire;
+<?php
 
 /**
  * ProcessWire Leaflet Map Marker Inputfield
@@ -10,7 +10,7 @@
  * For documentation about the fields used in this class, please see:
  * /wire/core/Fieldtype.php
  *
- * ProcessWire 3.x
+ * ProcessWire 2.x
  * Copyright (C) 2015 by Mats Neander
  * Copyright (C) 2015 by Mats Neander
  * Licensed under GNU/GPL v2, see LICENSE.TXT
@@ -24,9 +24,9 @@ class InputfieldLeafletMapMarker extends Inputfield {
     public static function getModuleInfo() {
         return array(
             'title' => 'Leaflet Map Marker',
-            'version' => '3.0.3',
+            'version' => '2.8.1',
             'summary' => "Provides input for the LeafletMapMarker Fieldtype",
-            'requires' => 'ProcessWire>=3.0.0, FieldtypeLeafletMapMarker',
+            'requires' => 'FieldtypeLeafletMapMarker',
             'icon' => 'map-marker',
         );
     }
@@ -127,7 +127,6 @@ class InputfieldLeafletMapMarker extends Inputfield {
             <input readonly type='text' id='{$id}' name='{$name}' value='{$address}'  /><br />
             </label>
             <input type='hidden' id='_{$name}_js_geocode_address' name='_{$name}_js_geocode_address' value='' />
-            <input type='hidden' id='_{$id}_raw' name='_{$name}_raw' value='{$marker->raw}' />
             </p>
 
 
@@ -149,6 +148,13 @@ class InputfieldLeafletMapMarker extends Inputfield {
             <label>
             <strong>$labels[zoom]</strong><br />
             <input type='number' min='0' id='_{$id}_zoom' name='_{$name}_zoom' value='{$marker->zoom}' />
+            </label>
+            </p>
+
+            <p class='InputfieldLeafletMapMarkerClear'>
+            <label>
+            <strong>Clear</strong><br />
+            <input class='uk-checkbox' type='checkbox'  name='_clear_values' />
             </label>
             </p>
 
@@ -178,6 +184,17 @@ _OUT;
         $name = $this->attr('name');
         $marker = $this->attr('value');
 
+
+        //This should clear alla values if checked
+        if($input->_clear_values){
+            $marker->set('address', '');
+            $marker->set('lat', '');
+            $marker->set('lng', '');
+            $marker->set('zoom', '');
+            
+            return $this;
+        }
+
         if(!isset($input->$name)) return $this;
 
         if($input->$name == $this->defaultAddr) {
@@ -206,8 +223,6 @@ _OUT;
         if(is_null($status)) $marker->set('status', LeafletMapMarker::statusNoGeocode); // disable geocode
         else $marker->set('status', (int) $status);
 
-        $raw = $input["_{$name}_raw"];
-        $marker->set('raw', $raw);
         // $provider = $input["_{$name}_provider"];
         // $marker->set('provider', $provider);
 
@@ -238,7 +253,7 @@ _OUT;
         $field->label = $this->_('Default Address');
         $field->description = $this->_('This will be geocoded to become the starting point of the map.');
         $field->attr('value', $this->defaultAddr);
-        $field->notes = $this->_('When modifying the default address, please make the Latitude and Longitude fields below blank, which will force the system to geocode your new address.');
+        $field->notes = $this->_('When modifying the default address, please make the Latitude and Longitude fields below blank, which will force the system to geocode your new address. Geocoding by OpenstreetMaps Nominatim service');
         $inputfields->add($field);
 
         if(!$this->defaultLat && !$this->defaultLng) {
@@ -310,8 +325,7 @@ _OUT;
             "\$page->{$this->name}->address\n" .
             "\$page->{$this->name}->lat\n" .
             "\$page->{$this->name}->lng\n" .
-            "\$page->{$this->name}->zoom\n" .
-            "\$page->{$this->name}->raw" .            
+            "\$page->{$this->name}->zoom" .
             "</pre>";
 
         $inputfields->add($field);
