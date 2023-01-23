@@ -1,4 +1,4 @@
-<?php namespace Processwire;
+<?php namespace ProcessWire;
 
 /**
  * Class to hold an address and geocode it to latitude/longitude
@@ -86,7 +86,6 @@ class LeafletMapMarker extends WireData {
         $response = $http->get($url);
         if ($response !== false) {
             $result = json_decode($response, true);
-            bd($result);
         } else {
             $this->error("Error geocoding address");
             if(isset($json['status'])) $this->status = (int) array_search($json['status'], $this->geocodeStatuses);
