@@ -1,4 +1,4 @@
-<?php namespace Processwire;
+<?php namespace ProcessWire;
 
 /**
  * Class to hold an address and geocode it to latitude/longitude
@@ -80,11 +80,13 @@ class LeafletMapMarker extends WireData {
             return 0;
         }
 
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" . urlencode($this->address);
-        $json = file_get_contents($url);
-        $json = json_decode($json, true);
-
-        if(empty($json['status']) || $json['status'] != 'OK') {
+        // use openstreetmap api for get geocode
+        $url = 'https://nominatim.openstreetmap.org/search?limit=1&format=json&q=' . urlencode($this->address);
+        $http = new WireHttp();
+        $response = $http->get($url);
+        if ($response !== false) {
+            $result = json_decode($response, true);
+        } else {
             $this->error("Error geocoding address");
             if(isset($json['status'])) $this->status = (int) array_search($json['status'], $this->geocodeStatuses);
             else $this->status = -1;
@@ -94,21 +96,12 @@ class LeafletMapMarker extends WireData {
             return $this->status;
         }
 
-        $geometry = $json['results'][0]['geometry'];
-        $location = $geometry['location'];
-        $locationType = $geometry['location_type'];
+        $this->lat = $result[0]['lat'];
+        $this->lng = $result[0]['lon'];
+        $this->raw = $response;
 
-        $this->lat = $location['lat'];
-        $this->lng = $location['lng'];
-        $this->raw = json_encode($json['results'][0]);
-
-        $statusString = $json['status'] . '_' . $locationType;
-        $status = array_search($statusString, $this->geocodeStatuses);
-        if($status === false) $status = 1; // OK
-
-        $this->status = $status;
-        $this->message("Geocode {$this->statusString}: '{$this->address}'");
-
+        $this->message("Geocode OK: '{$this->address}'");
+        $this->status = 1;
         return $this->status;
     }
 

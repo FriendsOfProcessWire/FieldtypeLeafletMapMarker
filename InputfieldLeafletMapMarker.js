@@ -14,13 +14,14 @@ var InputfieldLeafletMapMarker = {
 
     init: function(mapId, lat, lng, zoom, mapType, provider) {
 
+        var mapElement = document.getElementById(mapId);
         var options = InputfieldLeafletMapMarker.options;
 
         if(zoom < 1) zoom = 9;
         //options.center = new google.maps.LatLng(lat, lng);
         options.zoom = parseInt(zoom);
-
-        var map = L.map(document.getElementById(mapId)). setView([lat, lng], options.zoom);
+        
+        var map = L.map(mapElement).setView([lat, lng], options.zoom);
         L.tileLayer.provider(provider).addTo(map);
 
         var coder = L.Control.Geocoder.nominatim(),
@@ -113,69 +114,34 @@ var InputfieldLeafletMapMarker = {
 
         map.on('zoomend', function(event){
             $zoom.val(map.getZoom());
-        })
-
-        /*
-           google.maps.event.addListener(map, 'zoom_changed', function() {
-           $zoom.val(map.getZoom());
-           });
-
-           $addr.blur(function() {
-           if(!$toggle.is(":checked")) return true;
-           var geocoder = new google.maps.Geocoder();
-           geocoder.geocode({ 'address': $(this).val()}, function(results, status) {
-           if(status == google.maps.GeocoderStatus.OK && results[0]) {
-           var position = results[0].geometry.location;
-           map.setCenter(position);
-           marker.setPosition(position);
-           $lat.val(position.lat());
-           $lng.val(position.lng());
-           $addrJS.val($addr.val());
-           }
-           $notes.text(status);
-           });
-           return true;
-           });
-
-           $zoom.change(function() {
-           map.setZoom(parseInt($(this).val()));
-           });
-
-           $toggle.click(function() {
-           if($(this).is(":checked")) {
-           $notes.text('Geocode ON');
-        // google.maps.event.trigger(marker, 'dragend');
-        $addr.trigger('blur');
-        } else {
-        $notes.text('Geocode OFF');
-        }
-        return true;
         });
-
-        // added by diogo to solve the problem of maps not rendering correctly in hidden elements
-        // trigger a resize on the map when either the tab button or the toggle field bar are pressed
 
         // get the tab element where this map is integrated
-        var $map = $('#' + mapId);
-        var $tab = $('#_' + $map.closest('.InputfieldFieldsetTabOpen').attr('id'));
-        // get the inputfield where this map is integrated and add the tab to the stack
-        var $inputFields = $map.closest('.Inputfield').find('.InputfieldStateToggle').add($tab);
+		var $map = $('#' + mapId); 
+		var $tab = $('#_' + $map.closest('.InputfieldFieldsetTabOpen').attr('id'));
+		// get the inputfield where this map is integrated and add the tab to the stack
+		var $inputFields = $map.closest('.Inputfield').find('.InputfieldStateToggle').add($tab);
 
         $inputFields.on('click',function(){
-        // give it time to open
-        window.setTimeout(function(){
-        google.maps.event.trigger(map,'resize');
-        map.setCenter(options.center);
-        }, 200);
-        });
-        */
+			window.setTimeout(function(){
+				map.invalidateSize();
+            }, 200);
+		});
     }
 };
 
+function initializeLeafletMap() {
+    $(".InputfieldLeafletMapMarkerMap").each(function(item) {
+        var $t = $(this);
+        if (!$t.children().length) {
+            InputfieldLeafletMapMarker.init($t.attr('id'), $t.attr('data-lat'), $t.attr('data-lng'), $t.attr('data-zoom'), $t.attr('data-type'), $t.attr('data-provider'));
+        }
+    });
+}
 
 $(document).ready(function() {
-    $(".InputfieldLeafletMapMarkerMap").each(function() {
-        var $t = $(this);
-        InputfieldLeafletMapMarker.init($t.attr('id'), $t.attr('data-lat'), $t.attr('data-lng'), $t.attr('data-zoom'), $t.attr('data-type'), $t.attr('data-provider'));
-    });
-});
+    initializeLeafletMap();
+    $(document)
+        .on('reloaded', '.InputfieldRepeater', initializeLeafletMap)
+        .on('opened', '.InputfieldRepeaterItem', initializeLeafletMap);
+}); 
