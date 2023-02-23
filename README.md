@@ -53,14 +53,15 @@ _If the geocoding does not work, please ensure that your browser is not blocking
 In your template files, you can utilize this data for your own Leaflet Maps (or anything else that you might need latitude/longitude for).
 
 Lets assume that your field is called 'map'. Here is how you would access the components of it from the API:
-```````````
+
+```php
 echo $page->map->address;	// outputs the address you entered
 echo $page->map->lat; 		// outputs the latitude
 echo $page->map->lng; 		// outputs the longitude
 echo $page->map->zoom;		// outputs the zoom level
-`````````
+```
 
--------------
+---
 
 ## Markup Leaflet Map
 
@@ -70,7 +71,8 @@ This package also comes with a markup helper module called MarkupLeafletMap. It 
 
 Seeing as we are going to need access to the module as we generate the HTML header block (to add script and style
 includes), we first load and gain access to the Markup module...
-```
+
+```php
 <?php $map = wire('modules')->get('MarkupLeafletMap'); ?>
 ```
 
@@ -78,31 +80,36 @@ _Leaflet's js code requires jquery - so make sure you load that in HTML header s
 
 MarkupLeafletMap includes the _getLeafletMapHeaderLines()_ method that generates all the needed script and style includes for your HTML header
 section so simply add this somewhere before your closing `</head>` tag:
-```
+
+```php
 <?php echo $map->getLeafletMapHeaderLines(); ?>
 ```
 
 If you already load FontAwesome elsewhere in your header and you do not want it included as part of the Leaflet Map header lines, use the following version:
-```
+
+```php
 <?php echo $map->getLeafletMapHeaderLines(false); ?>
 ```
 
 
 In the location within the body of your HTML where you want your map to appear, place the following:
-`````````
+
+```php
 <?php echo $map->render($page, 'YOUR MARKER FIELD'); ?>
-`````````
+```
 
 To render a map with multiple markers on it, specify a PageArray rather than a single $page:
-`````````
+
+```php
 $items = $pages->find("A SELECTOR THAT GETS YOUR PAGES WITH MARKER FIELDS");
 echo $map->render($items, 'YOUR MARKER FIELD');
-`````````
+```
 
 To specify options, provide a 3rd argument with an options array:
-`````````
+
+```php
 echo $map->render($items, 'YOUR MARKER FIELD', array('height' => '500px'));
-`````````
+```
 
 ### Options
 
@@ -147,7 +154,8 @@ of your markers very nicely.
 You can change the default appearance of your map markers by supplying values for any or all of the `markerIcon`,
 `markerIconColour` and `markerColour` options that you pass into the `$map->render()` method. For instance, to make all
 the markers Red, with a white flag icon, use this code...
-```
+
+```php
 <?php
 $options = array('markerIcon' => 'flag', 'markerColour' => 'red');
 echo $map->render($items, 'YOUR MARKER FIELD', $options);
@@ -166,7 +174,7 @@ PHP, you can use a named function or method.
 To support this, let's add a new field called 'marker_icon', of type text, to the template of the pages that hold the LeafletMapMarker
 field.
 
-```
+```php
 <?php
 $options = array(
     'markerFormatter' => function($page, $marker_options) {
@@ -177,6 +185,7 @@ $options = array(
 echo $map->render($items, 'YOUR MARKER FIELD', $options);
 ?>
 ```
+
 `$marker_options` is the array of [Leaflet.AwesomeMarker properties](https://github.com/lvoogdt/Leaflet.awesome-markers#properties) that will be used to generate this marker.
 
 In this way, you can let the pages holding your LeafletMarkers also define their visuals.
@@ -186,7 +195,7 @@ In this way, you can let the pages holding your LeafletMarkers also define their
 You can similarly use a callback method to customise the content that appears within a marker's popup box. The return
 value from this method should be an HTML snippet that will be placed into the popup box _by Javascript_.
 
-```
+```php
 <?php
 $options = array(
     'popupFormatter' => function($page) {
@@ -202,7 +211,7 @@ echo $map->render($items, 'YOUR MARKER FIELD', $options);
 
 _NB._ The example above uses a PW image field called 'image' that is configured as a single instance field.
 
----------
+---
 
 ### Contributors
 
