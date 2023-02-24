@@ -81,7 +81,7 @@ var InputfieldLeafletMapMarker = {
                 var r = results[0];
                 if (r) {
                     $addr.val(r.name);
-                    $raw.val(JSON.stringify(r.properties));                 
+                    $raw.val(JSON.stringify(r.properties));
                 }
             })
         });
@@ -117,16 +117,22 @@ var InputfieldLeafletMapMarker = {
         });
 
         // get the tab element where this map is integrated
-		var $map = $('#' + mapId); 
-		var $tab = $('#_' + $map.closest('.InputfieldFieldsetTabOpen').attr('id'));
-		// get the inputfield where this map is integrated and add the tab to the stack
-		var $inputFields = $map.closest('.Inputfield').find('.InputfieldStateToggle').add($tab);
+        var $map = $('#' + mapId); 
 
-        $inputFields.on('click',function(){
-			window.setTimeout(function(){
-				map.invalidateSize();
+        // This seem to no longer work with Uikit theme.
+        // var $tab = $('#_' + $map.closest('.InputfieldFieldsetTabOpen').attr('id'));
+        // // get the inputfield where this map is integrated and add the tab to the stack
+        // var $inputFields = $map.closest('.Inputfield').find('.InputfieldStateToggle').add($tab);
+        
+        // Get closed wrappers around the map.
+        var $inputFields = $map.parents('.Inputfield.InputfieldStateCollapsed');
+
+        // Refresh the map when any of the wrappers open.
+        $inputFields.on('opened',function(){
+            window.setTimeout(function(){
+                map.invalidateSize();
             }, 200);
-		});
+        });
     }
 };
 
