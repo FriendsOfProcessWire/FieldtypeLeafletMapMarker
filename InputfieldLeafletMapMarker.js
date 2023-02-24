@@ -141,7 +141,5 @@ function initializeLeafletMap() {
 
 $(document).ready(function() {
     initializeLeafletMap();
-    $(document)
-        .on('reloaded', '.InputfieldRepeater', initializeLeafletMap)
-        .on('opened', '.InputfieldRepeaterItem', initializeLeafletMap);
+    $(document).on('reloaded', '.InputfieldLeafletMapMarker', initializeLeafletMap);
 }); 
