@@ -133,6 +133,11 @@ var InputfieldLeafletMapMarker = {
                 map.invalidateSize();
             }, 200);
         });
+
+        if ($('div.InputfieldLeafletMapMarkerMap').hasClass('scrollwheel-disabled')){
+            map.scrollWheelZoom.disable()
+        }
+
     }
 };
 
